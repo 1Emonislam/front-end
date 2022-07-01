@@ -29,12 +29,11 @@ function Login({ mode }) {
         dispatch(userLogin(data, reset))
     };
     useEffect(() => {
-        setTimeout(() => {
-            if (auth?.user?.email) {
-                window?.location.replace("/billing-dash")
-            }
-        }, 5000)
-    }, [auth?.user?.email])
+        if (auth?.user?.email) {
+            window?.location.replace("/billing-dash")
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
     };

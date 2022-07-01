@@ -6,19 +6,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
+import { useSelector } from 'react-redux';
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -27,7 +18,8 @@ const useStyles = makeStyles({
     }
   }
 });
-export default function TableData() {
+export default function TableData({ setLimit, setPage, page }) {
+  const { billing } = useSelector(state => state);
   const classes = useStyles();
   return (
     <Grid container spacing={0} sx={{ py: 1, px: 8, mb: 5 }}>
@@ -37,26 +29,43 @@ export default function TableData() {
             minWidth: 650
           }} className={classes.table} aria-label="simple table">
             <TableHead>
-              <TableRow>
-                <TableCell>Dessert (100g serving)</TableCell>
-                <TableCell align="right">Calories</TableCell>
-                <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                <TableCell align="right">Protein&nbsp;(g)</TableCell>
+              <TableRow style={{ background: 'rgb(202 195 195)' }}>
+                <TableCell style={{ borderRight: '1px solid #333' }}>Billing Id</TableCell>
+                <TableCell style={{ borderRight: '1px solid #333' }}>FullName</TableCell>
+                <TableCell style={{ borderRight: '1px solid #333' }}>Email</TableCell>
+                <TableCell style={{ borderRight: '1px solid #333' }}>Phone</TableCell>
+                <TableCell style={{ borderRight: '1px solid #333' }}>Paid Amount</TableCell>
+                <TableCell style={{ borderRight: '1px solid #333' }}>Status</TableCell>
+                <TableCell style={{ borderRight: '1px solid #333' }}>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
+              {billing?.billing?.length !== 0 && billing?.billing?.map((row, index) => (
                 <TableRow
-                  key={row.name}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.name}
+                  key={index}
+                >  {console.log(row)}
+                  <TableCell component="th" scope="row" style={{ borderRight: '1px solid #333', borderBottom: '1px solid #333' }}>
+                    {row?.billing_id}
                   </TableCell>
-                  <TableCell align="right">{row.calories}</TableCell>
-                  <TableCell align="right">{row.fat}</TableCell>
-                  <TableCell align="right">{row.carbs}</TableCell>
-                  <TableCell align="right">{row.protein}</TableCell>
+                  <TableCell component="th" scope="row" style={{ borderRight: '1px solid #333', borderBottom: '1px solid #333' }}>
+                    {row?.full_name}
+                  </TableCell>
+                  <TableCell component="th" scope="row" style={{ borderRight: '1px solid #333', borderBottom: '1px solid #333' }}>
+                    {row?.email}
+                  </TableCell>
+                  <TableCell component="th" scope="row" style={{ borderRight: '1px solid #333', borderBottom: '1px solid #333' }}>
+                    {row?.phone}
+                  </TableCell>
+                  <TableCell component="th" scope="row" style={{ borderRight: '1px solid #333', borderBottom: '1px solid #333' }}>
+                    {row?.paid_amount}
+                  </TableCell>
+                  <TableCell component="th" scope="row" style={{ borderRight: '1px solid #333', borderBottom: '1px solid #333' }}>
+                    {row?.action}
+                  </TableCell>
+                  <TableCell component="th" scope="row" style={{ borderRight: '1px solid #333', borderBottom: '1px solid #333' }}>
+                    <Button style={{ textTransform: 'capitalize' }}> Edit</Button>
+                    <Button style={{ textTransform: 'capitalize' }}> Delete</Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

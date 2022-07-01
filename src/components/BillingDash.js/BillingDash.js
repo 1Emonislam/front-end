@@ -1,14 +1,28 @@
-import React from 'react'
+import { useContext, useEffect } from 'react'
 import BillingSearch from './Sheard/BillingSearch'
 import Header from './Sheard/Header'
 import TableData from './Sheard/TableData'
-
+import { useDispatch } from 'react-redux'
+import { getBillingData } from '../../store/actions/billingAction'
+import { GlobalContexts } from '../../App'
 function BillingDash() {
+  const dispatch = useDispatch()
+  const {
+    page,
+    setPage,
+    limit,
+    setLimit,
+    search,
+    setSearch
+  } = useContext(GlobalContexts)
+  useEffect(() => {
+    dispatch(getBillingData(search, page, limit))
+  }, [dispatch, limit, page, search])
   return (
     <div>
       <Header />
-      <BillingSearch />
-      <TableData />
+      <BillingSearch setSearch={setSearch} />
+      <TableData setLimit={setLimit} page={page} setPage={setPage} />
     </div>
   )
 }
