@@ -47,8 +47,8 @@ export const userLogin = (data) => {
                         draggable: true,
                         progress: undefined,
                     });
+                    window.location.replace('/billing-dash')
                 }
-                window.location.replace('/billing-dash')
             })
     }
 }
