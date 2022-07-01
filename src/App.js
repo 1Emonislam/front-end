@@ -26,6 +26,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/billing-dash" element={<BillingDash />} />
+            <Route path="*" element={<h2>Not Founds</h2>} />
           </Routes>
         </BrowserRouter>
         <ToastContainer />
