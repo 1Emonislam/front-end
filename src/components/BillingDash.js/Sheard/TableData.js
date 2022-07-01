@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     }
   }
 });
-export default function TableData({ setLimit, setPage, page,limit }) {
+export default function TableData({ setLimit, setPage, page, limit }) {
   const { billing } = useSelector(state => state);
   const { metadata } = billing;
   const classes = useStyles();
@@ -71,7 +71,7 @@ export default function TableData({ setLimit, setPage, page,limit }) {
             </TableBody>
           </Table>
         </TableContainer>
-        <Pagination count={Math.ceil(metadata?.total / limit)} variant="outlined" shape="rounded" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '30px 0px' }} onChange={(e, value) => setPage(value)}  />
+        <Pagination count={Math.ceil(metadata?.total / limit || 0)} variant="outlined" shape="rounded" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '30px 0px' }} onChange={(e, value) => setPage(value)} />
       </Grid>
     </Grid>
 

@@ -8,6 +8,7 @@ const initState = {
 export const GET_BILLING_DATA = 'GET_BILLING_DATA';
 export const BILING_DATA_ERROR = 'BILING_DATA_ERROR';
 export const LOADING_BILLING = 'LOADING_BILLING';
+export const AMOUNT_CAL = 'AMOUNT_CAL';
 export const billingReducer = (state = initState, action) => {
     const { payload, type } = action;
     if (type === GET_BILLING_DATA) {
@@ -30,6 +31,15 @@ export const billingReducer = (state = initState, action) => {
         return {
             ...state,
             loading: payload.loading,
+        }
+    }
+    if (type === AMOUNT_CAL) {
+        return {
+            ...state,
+            metadata: {
+                ...state?.metadata,
+                totalAmount: payload.totalAmount,
+            },
         }
     }
     return state;

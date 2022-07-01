@@ -3,6 +3,9 @@ import { Box, Modal, Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Cancel from '@mui/icons-material/Cancel';
 import './addModal.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { billing_UID_GEN } from '../../utils/base';
+import { postBillingData } from '../../store/actions/billingAction';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -17,14 +20,15 @@ const style = {
     p: 4,
 };
 export default function BillingModal({ open, content, handleClose }) {
-
+    const { auth } = useSelector(state => state);
+    const dispatch = useDispatch();
     const { register,
         //  reset,
         handleSubmit } = useForm();
-    const onSubmit = data => {
-
+    const onSubmit = async data => {
+        data.billing_id = billing_UID_GEN(10, auth?.user?._id)
+        dispatch(postBillingData(data))
     };
-
     return (
         <div>
             <Modal
