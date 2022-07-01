@@ -21,7 +21,6 @@ export default function TableData({ setLimit, setPage, page,limit }) {
   const { billing } = useSelector(state => state);
   const { metadata } = billing;
   const classes = useStyles();
-  console.log(metadata)
   return (
     <Grid container spacing={0} sx={{ py: 1, px: 8, mb: 5 }}>
       <Grid item xs={12}>
