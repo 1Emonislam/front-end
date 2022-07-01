@@ -29,13 +29,6 @@ function Register({ mode }) {
   const onSubmit = data => {
     dispatch(userRegister(data, reset));
   };
-  useEffect(() => {
-    if (!auth?.user?.email) {
-      setTimeout(() => {
-        window?.location.replace("/login")
-      }, 5000)
-    }
-  }, [auth?.user?.email])
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
