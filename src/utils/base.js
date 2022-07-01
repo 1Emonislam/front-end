@@ -1,4 +1,4 @@
-export const baseURL = 'http://localhost:5000'
+export const baseURL = 'https://tr-billing.herokuapp.com'
 export const billing_UID_GEN = async (length, id) => {
     /**
      * @param  {String} s UID Gen Unique
