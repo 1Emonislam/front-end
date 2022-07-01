@@ -2,9 +2,10 @@ import React from 'react'
 import Grid from '@mui/material/Grid';
 import { Button } from '@mui/material';
 import { useState } from 'react';
+import BillingModal from '../../BillingModals/BillingModal';
 
 function BillingSearch() {
-    const [open,setOpen] =useState(false)
+    const [open, setOpen] = useState(false)
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -22,10 +23,10 @@ function BillingSearch() {
                     </div>
                 </Grid>
                 <Grid item xs={8.5}>
-                    <div style={{ textAlign: 'right' }}>  <Button style={{ background: 'black', color: 'white', textTransform: 'capitalize', padding: '4px 30px' }}onClick={() => handleOpen()}> Add New Bill</Button></div>
+                    <div style={{ textAlign: 'right' }}>  <Button style={{ background: 'black', color: 'white', textTransform: 'capitalize', padding: '4px 30px' }} onClick={() => handleOpen()}> Add New Bill</Button></div>
                 </Grid>
             </Grid>
-            {/* {open&&<Billing} */}
+            {open && <BillingModal open={open} handleClose={handleClose} />}
         </div>
     )
 }

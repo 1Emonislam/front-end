@@ -1,14 +1,7 @@
-import { Box, Button, Modal } from '@material-ui/core';
-import Cancel from '@material-ui/icons/Cancel';
-import React, { useState } from 'react';
+
+import { Box, Modal, Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import {
-    // getClientRole,
-    // timeFormat,
-    // timezone,
-    useAuth,
-    useSecureBranches
-} from 'shared';
+import Cancel from '@mui/icons-material/Cancel';
 import './addModal.css';
 const style = {
     position: 'absolute',
@@ -23,9 +16,11 @@ const style = {
     borderRadius: '8px',
     p: 4,
 };
-export default function BillingModal({ open, content, setOpen, addHandleOpen, addHandleClose }) {
+export default function BillingModal({ open, content, handleClose }) {
 
-    const { register, reset, handleSubmit } = useForm();
+    const { register,
+        //  reset,
+        handleSubmit } = useForm();
     const onSubmit = data => {
 
     };
@@ -34,14 +29,14 @@ export default function BillingModal({ open, content, setOpen, addHandleOpen, ad
         <div>
             <Modal
                 open={open}
-                // onClose={addHandleClose}
+                //onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <h3 style={{ margin: '0', padding: '0' }}>{content?.title}</h3>
-                        <Cancel style={{ cursor: 'pointer' }} onClick={() => addHandleClose()} />
+                        <Cancel style={{ cursor: 'pointer' }} onClick={() => handleClose()} />
                     </div>
                     <br />
 
@@ -73,7 +68,7 @@ export default function BillingModal({ open, content, setOpen, addHandleOpen, ad
 
                         <br />
                         <div>
-                            <Button onClick={() => addHandleClose()} variant="contained" style={{ background: 'red', padding: '5px 20px', cursor: 'pointer', borderRadius: '5px', color: 'white', marginRight: '20px' }}>
+                            <Button onClick={() => handleClose()} variant="contained" style={{ background: 'red', padding: '5px 20px', cursor: 'pointer', borderRadius: '5px', color: 'white', marginRight: '20px' }}>
                                 Cancel
                             </Button>
                             <Button type="submit" variant="contained" style={{ background: 'green', padding: '5px 20px', borderRadius: '5px', color: 'white', cursor: 'pointer' }}>
