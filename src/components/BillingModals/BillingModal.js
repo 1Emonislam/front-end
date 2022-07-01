@@ -3,9 +3,8 @@ import { Box, Modal, Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Cancel from '@mui/icons-material/Cancel';
 import './addModal.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { billing_UID_GEN } from '../../utils/base';
-import { postBillingData } from '../../store/actions/billingAction';
+import { useDispatch } from 'react-redux';
+import { postBillingData, updateBillingData } from '../../store/actions/billingAction';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -19,15 +18,18 @@ const style = {
     borderRadius: '8px',
     p: 4,
 };
-export default function BillingModal({ open, content, handleClose }) {
-    const { auth } = useSelector(state => state);
+export default function BillingModal({ open, content, handleClose, page }) {
     const dispatch = useDispatch();
     const { register,
-        //  reset,
+        reset,
         handleSubmit } = useForm();
-    const onSubmit = async data => {
-        data.billing_id = billing_UID_GEN(10, auth?.user?._id)
-        dispatch(postBillingData(data))
+    // console.log(content)
+    const onSubmit = (data) => {
+        if (content?._id) {
+            dispatch(updateBillingData(content?._id, data, reset, handleClose, page))
+        } else {
+            dispatch(postBillingData(data, reset, handleClose))
+        }
     };
     return (
         <div>
@@ -50,26 +52,35 @@ export default function BillingModal({ open, content, handleClose }) {
                                 borderColor: 'green',
                                 boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
                             },
-                        }} autoComplete="off"    {...register("full_name", { min: 0 })} type="text" placeholder={"Full Name"} required />
+                        }} autoComplete="off" defaultValue={content?.full_name} {...register("full_name", { min: 0 })} type="text" placeholder={"Full Name"} required />
                         <input style={{
                             width: '90%', outline: 'none', marginBottom: "15px", border: '1px solid #ddd', borderRadius: '3px', padding: '10px', '&:focus': {
                                 borderColor: 'green',
                                 boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
                             },
-                        }} autoComplete="off" {...register("phone", { min: 0 })} placeholder="phone" min="0" type="number" required />
+                        }} autoComplete="off" defaultValue={Number(content?.phone)}{...register("phone", { min: 0 })} placeholder="phone" min="0" type="number" required />
                         <input style={{
                             width: '90%', outline: 'none', marginBottom: "15px", border: '1px solid #ddd', borderRadius: '3px', padding: '10px', '&:focus': {
                                 borderColor: 'green',
                                 boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
                             },
-                        }} autoComplete="off" {...register("email", { min: 0 })} placeholder="Email" min="0" type="email" required />
+                        }} autoComplete="off" defaultValue={content?.email} {...register("email", { min: 0 })} placeholder="Email" min="0" type="email" required />
+                       { content?.action&&<select defaultValue={content?.action}{...register("action", { min: 0 })} name="SelectA" style={{
+                            width: '95%', outline: 'none', marginBottom: "15px", border: '1px solid #ddd', borderRadius: '3px', padding: '10px', '&:focus': {
+                                borderColor: 'green',
+                                boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+                            },
+                        }}>
+                            <option value="active"> Active </option>
+                            <option value="pending"> Pending </option>
+                            <option value="block"> Block </option>
+                        </select>}
                         <input style={{
                             width: '90%', outline: 'none', marginBottom: "15px", border: '1px solid #ddd', borderRadius: '3px', padding: '10px', '&:focus': {
                                 borderColor: 'green',
                                 boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
                             },
-                        }} autoComplete="off" {...register("amount", { min: 0 })} placeholder="Amount" min="0" type="number" required />
-
+                        }} autoComplete="off" defaultValue={content?.paid_amount}{...register("paid_amount", { min: 0 })} placeholder="Amount" min="0" type="number" required />
                         <br />
                         <div>
                             <Button onClick={() => handleClose()} variant="contained" style={{ background: 'red', padding: '5px 20px', cursor: 'pointer', borderRadius: '5px', color: 'white', marginRight: '20px' }}>

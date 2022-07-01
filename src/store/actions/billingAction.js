@@ -2,7 +2,7 @@ import { toast } from "react-toastify"
 import { baseURL } from "../../utils/base"
 import store from './../store'
 import { GET_BILLING_DATA, LOADING_BILLING } from "../reducers/billingReducer"
-export const getBillingData = (search, page, limit) => {
+export const getBillingData = (search, page, limit,check) => {
     //console.log(search)
     return (dispatch) => {
         dispatch({
@@ -48,21 +48,11 @@ export const getBillingData = (search, page, limit) => {
                             billing: data?.billing?.data,
                         }
                     })
-                    // eslint-disable-next-line no-useless-concat
-                    toast(`${data?.message} ${page && 'switch page' + ' ' + page}`, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                }
+                    }  // eslint-disable-next-line no-useless-concat   
             })
     }
 }
-export const postBillingData = (data) => {
+export const postBillingData = (data, reset, handleClose) => {
     //console.log(search)
     return (dispatch) => {
         dispatch({
@@ -79,9 +69,11 @@ export const postBillingData = (data) => {
             },
             body: JSON.stringify(data)
         }
-        fetch(`${baseURL}/api/add-billing`, config)
+        fetch(`${baseURL}/api/add-billing?page=1&limit=11`, config)
             .then(res => res.json())
             .then(data => {
+                reset()
+                handleClose()
                 dispatch({
                     type: LOADING_BILLING,
                     payload: {
@@ -122,7 +114,7 @@ export const postBillingData = (data) => {
             })
     }
 }
-export const deleteBillingData = (id) => {
+export const deleteBillingData = (id,page,limit) => {
     //console.log(search)
     return (dispatch) => {
         dispatch({
@@ -132,13 +124,13 @@ export const deleteBillingData = (id) => {
             }
         })
         const config = {
-            method: 'POST',
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${store.getState()?.auth?.user?.jwtToken}`
             },
         }
-        fetch(`${baseURL}/api/delete-billing/${id}`, config)
+        fetch(`${baseURL}/api/delete-billing/${id}?page=${page}&limit=${limit}`, config)
             .then(res => res.json())
             .then(data => {
                 dispatch({
@@ -181,7 +173,7 @@ export const deleteBillingData = (id) => {
             })
     }
 }
-export const updateBillingData = (id) => {
+export const updateBillingData = (id, data, reset, handleClose,page) => {
     //console.log(search)
     return (dispatch) => {
         dispatch({
@@ -196,10 +188,13 @@ export const updateBillingData = (id) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${store.getState()?.auth?.user?.jwtToken}`
             },
+            body: JSON.stringify(data)
         }
-        fetch(`${baseURL}/api/update-billing/${id}`, config)
+        fetch(`${baseURL}/api/update-billing/${id}?page=${page}`, config)
             .then(res => res.json())
             .then(data => {
+                reset()
+                handleClose()
                 dispatch({
                     type: LOADING_BILLING,
                     payload: {

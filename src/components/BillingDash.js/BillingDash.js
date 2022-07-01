@@ -16,8 +16,13 @@ function BillingDash() {
     setSearch
   } = useContext(GlobalContexts)
   useEffect(() => {
-    dispatch(getBillingData(search, page, limit))
-  }, [dispatch, limit, page, search])
+    dispatch(getBillingData('', page, limit))
+  }, [dispatch, limit, page])
+  useEffect(() => {
+   if(search){
+    dispatch(getBillingData(search,page, limit,'search'))
+   }
+  }, [dispatch,search])
   return (
     <div>
       <Header />

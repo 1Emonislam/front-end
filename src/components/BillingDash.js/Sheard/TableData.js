@@ -7,8 +7,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { makeStyles } from '@mui/styles';
-import { useSelector } from 'react-redux';
-
+import { useState } from 'react';
+import {deleteBillingData} from './../../../store/actions/billingAction'
+import { useSelector,useDispatch } from 'react-redux';
+import BillingModal from '../../BillingModals/BillingModal';
+import Loading from '../../Spinner/Loading';
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -19,12 +22,24 @@ const useStyles = makeStyles({
 });
 export default function TableData({ setLimit, setPage, page, limit }) {
   const { billing } = useSelector(state => state);
-  const { metadata } = billing;
+  const { metadata, loading } = billing;
+  const [content, setContent] = useState({})
   const classes = useStyles();
+  const dispatch = useDispatch()
+  const [open, setOpen] = useState(false)
+  const handleOpen = (data) => {
+    data.title = 'Update Billing';
+    setContent(data)
+    setOpen(true)
+  };
+  const handleDelete = (id) =>{
+    dispatch(deleteBillingData(id,page,limit))
+  }
+  const handleClose = () => setOpen(false);
   return (
     <Grid container spacing={0} sx={{ py: 1, px: 8, mb: 5 }}>
       <Grid item xs={12}>
-        <TableContainer component={Paper} style={{ background: '#ddd' }}>
+        {loading ? <Loading /> : <TableContainer component={Paper} style={{ background: '#ddd' }}>
           <Table sx={{
             minWidth: 650
           }} className={classes.table} aria-label="simple table">
@@ -63,16 +78,17 @@ export default function TableData({ setLimit, setPage, page, limit }) {
                     {row?.action}
                   </TableCell>
                   <TableCell component="th" scope="row" style={{ borderRight: '1px solid #444', borderBottom: '1px solid #444' }}>
-                    <Button style={{ textTransform: 'capitalize' }}> Edit</Button>
-                    <Button style={{ textTransform: 'capitalize' }}> Delete</Button>
+                    <Button style={{ textTransform: 'capitalize' }} onClick={() => handleOpen(row)}> Edit</Button>
+                    <Button style={{ textTransform: 'capitalize' }}onClick={() => handleDelete(row?._id)}> Delete</Button>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        </TableContainer>
+        </TableContainer>}
         <Pagination count={Math.ceil(metadata?.total / limit || 0)} variant="outlined" shape="rounded" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '30px 0px' }} onChange={(e, value) => setPage(value)} />
       </Grid>
+      {open && <BillingModal content={content} page={page} open={open} handleClose={handleClose} />}
     </Grid>
 
   );
