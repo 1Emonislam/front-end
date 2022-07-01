@@ -44,11 +44,12 @@ export const getBillingData = (search, page, limit) => {
                     dispatch({
                         type: GET_BILLING_DATA,
                         payload: {
-                            metaData: data?.billing?.metadata?.length ? data?.billing?.metadata[0] : {},
+                            metadata: data?.billing?.metadata?.length ? data?.billing?.metadata[0] : {},
                             billing: data?.billing?.data,
                         }
                     })
-                    toast(data?.message, {
+                    // eslint-disable-next-line no-useless-concat
+                    toast(`${data?.message} ${page && 'switch page' + ' ' + page}`, {
                         position: "top-center",
                         autoClose: 5000,
                         hideProgressBar: false,

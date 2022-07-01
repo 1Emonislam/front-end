@@ -22,7 +22,7 @@ function BillingDash() {
     <div>
       <Header />
       <BillingSearch setSearch={setSearch} />
-      <TableData setLimit={setLimit} page={page} setPage={setPage} />
+      <TableData limit={limit}setLimit={setLimit} page={page} setPage={setPage}  onChange={(e, value) => setPage(value)}/>
     </div>
   )
 }

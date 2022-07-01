@@ -1,5 +1,5 @@
 const initState = {
-    metaData: {},
+    metadata: {},
     billing: [],
     error: '',
     message: '',
@@ -13,7 +13,7 @@ export const billingReducer = (state = initState, action) => {
     if (type === GET_BILLING_DATA) {
         return {
             ...state,
-            metaData: payload.metaData,
+            metadata: payload.metadata,
             billing: payload.billing,
             loading: false
         }
